@@ -35,15 +35,12 @@ export const SET_PAYMENT_METHOD_ON_CART = gql`
 `;
 
 export const SET_IDEAL_PAYMENT_METHOD_ON_CART = gql`
-    mutation setPaymentMethodOnCart($cartId: String!, $selectedMethod: String!, $issuer: String!) {
+    mutation setPaymentMethodOnCart($cartId: String!, $selectedMethod: String!) {
         setPaymentMethodOnCart(
             input: {
                 cart_id: $cartId
                 payment_method: {
                     code: $selectedMethod
-                    multisafepay_ideal: {
-                        issuer_id: $issuer
-                    }
                 }
             }
         ) @connection(key: "setPaymentMethodOnCart") {

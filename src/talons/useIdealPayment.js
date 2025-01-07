@@ -17,7 +17,7 @@ import DEFAULT_OPERATIONS from './basePayment.gql';
 /**
  *
  * @param props
- * @returns {{onBillingAddressChangedError: (function(): void), onBillingAddressChangedSuccess: (function(): void), handleIssuerSelection: (function(*=): void)}}
+ * @returns {{onBillingAddressChangedError: (function(): void), onBillingAddressChangedSuccess: (function(): void)}}
  */
 
 const DEFAULT_ISSUER = '0761';
@@ -32,7 +32,6 @@ export const useIdealPayment = props => {
 
     const [{cartId}] = useCartContext();
     const {currentSelectedPaymentMethod: selectedMethod} = props;
-    const [issuer, setIssuer] = useState(defaultIssuer);
 
     const {resetShouldSubmit, onPaymentSuccess, onPaymentError} = props;
 
@@ -52,21 +51,14 @@ export const useIdealPayment = props => {
         resetShouldSubmit();
     }, [resetShouldSubmit]);
 
-    const handleIssuerSelection = useCallback(
-        value => {
-            setIssuer(value);
-        },
-        [setIssuer]
-    );
-
     /**
      * This function will be called if address was successfully set.
      */
     const onBillingAddressChangedSuccess = useCallback(() => {
         updatePaymentMethod({
-            variables: {cartId, selectedMethod, issuer}
+            variables: {cartId, selectedMethod}
         });
-    }, [updatePaymentMethod, cartId, selectedMethod, issuer]);
+    }, [updatePaymentMethod, cartId, selectedMethod]);
 
     useEffect(() => {
         const paymentMethodMutationCompleted =
@@ -90,8 +82,6 @@ export const useIdealPayment = props => {
 
     return {
         onBillingAddressChangedError,
-        onBillingAddressChangedSuccess,
-        handleIssuerSelection,
-        issuer
+        onBillingAddressChangedSuccess
     };
 };
